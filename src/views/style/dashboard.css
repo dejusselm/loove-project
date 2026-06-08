@@ -1,0 +1,8 @@
+* {
+    margin: 0.5em;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+}

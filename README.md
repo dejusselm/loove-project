@@ -7,6 +7,12 @@ While being at the root of the project, type the following in the terminal :
 
     docker compose up --build
 
+## Stopping docker containers
+Still while being at the root of the project, type the following in the terminal :
+
+    docker compose down
+    
+
 ## Add a file named '.env' to the root of the project (next to the docker files)
 .env file example ( you can copy and paste the following ): 
 

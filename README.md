@@ -44,4 +44,9 @@ MailHog is used to intercept mails sent by Loove App.
 # Admin account
 To make an admin account, you have to register like usual, and then manually set in the database's users table, column 'role' to 'admin'.
 
+# Payment
+
+To pay for the membership, use a false card : 4242 4242 4242 4242
+<br> The other informations don't matter
+
 

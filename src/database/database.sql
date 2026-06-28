@@ -1,0 +1,328 @@
+-- MySQL dump 10.13  Distrib 8.0.46, for Linux (x86_64)
+--
+-- Host: localhost    Database: loove_app
+-- ------------------------------------------------------
+-- Server version	8.0.46
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `hobbies`
+--
+
+DROP TABLE IF EXISTS `hobbies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hobbies` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hobbies`
+--
+
+LOCK TABLES `hobbies` WRITE;
+/*!40000 ALTER TABLE `hobbies` DISABLE KEYS */;
+INSERT INTO `hobbies` VALUES (1,'Cinema'),(2,'Sport'),(3,'Sculpture'),(4,'Reading'),(5,'Writing'),(6,'Drawing'),(7,'Gardening'),(8,'Fashion'),(9,'3D modeling'),(10,'Video games'),(11,'Cooking'),(12,'Partying'),(13,'DIY'),(14,'Dancing'),(15,'Animals'),(16,'Traveling'),(17,'Art'),(18,'Fighting');
+/*!40000 ALTER TABLE `hobbies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `matches`
+--
+
+DROP TABLE IF EXISTS `matches`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `matches` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type` enum('match','like','reject') DEFAULT NULL,
+  `user_id` int NOT NULL,
+  `profile_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id_idx` (`user_id`),
+  KEY `profile_id_idx` (`profile_id`),
+  CONSTRAINT `profile_id` FOREIGN KEY (`profile_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `matches`
+--
+
+LOCK TABLES `matches` WRITE;
+/*!40000 ALTER TABLE `matches` DISABLE KEYS */;
+/*!40000 ALTER TABLE `matches` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `memberships`
+--
+
+DROP TABLE IF EXISTS `memberships`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `memberships` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type` enum('free','premium') DEFAULT 'free',
+  `user_id` int DEFAULT NULL,
+  `debut_date` date DEFAULT NULL,
+  `stripe_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id_idx` (`user_id`),
+  KEY `membership_id_idx` (`user_id`),
+  CONSTRAINT `membership_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `memberships`
+--
+
+LOCK TABLES `memberships` WRITE;
+/*!40000 ALTER TABLE `memberships` DISABLE KEYS */;
+INSERT INTO `memberships` VALUES (9,'premium',27,'2026-06-27','sub_1Tn39OGbfvYQKJFYOManUOiX');
+/*!40000 ALTER TABLE `memberships` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `messages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `sender_id` int NOT NULL,
+  `recipient_id` int NOT NULL,
+  `status` enum('sent','delivered','read') NOT NULL DEFAULT 'sent',
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `send_id_idx` (`sender_id`),
+  KEY `recipient_id_idx` (`recipient_id`),
+  CONSTRAINT `recipient_id` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `sender_id` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `messages`
+--
+
+LOCK TABLES `messages` WRITE;
+/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notifications` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` enum('match','chat','admin') DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notifications`
+--
+
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `profile_photos`
+--
+
+DROP TABLE IF EXISTS `profile_photos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `profile_photos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `photo_path` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `profile_photos_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profile_photos`
+--
+
+LOCK TABLES `profile_photos` WRITE;
+/*!40000 ALTER TABLE `profile_photos` DISABLE KEYS */;
+INSERT INTO `profile_photos` VALUES (12,27,'6a411fd9c3d17_photo.jpg'),(13,27,'6a411fe13d0d1_photo.jpg');
+/*!40000 ALTER TABLE `profile_photos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `profile_views`
+--
+
+DROP TABLE IF EXISTS `profile_views`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `profile_views` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `profile_id` int NOT NULL,
+  `viewer_id` int NOT NULL,
+  `viewed_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `profile_id` (`profile_id`),
+  KEY `viewer_id` (`viewer_id`),
+  CONSTRAINT `profile_views_ibfk_1` FOREIGN KEY (`profile_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `profile_views_ibfk_2` FOREIGN KEY (`viewer_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profile_views`
+--
+
+LOCK TABLES `profile_views` WRITE;
+/*!40000 ALTER TABLE `profile_views` DISABLE KEYS */;
+/*!40000 ALTER TABLE `profile_views` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reports`
+--
+
+DROP TABLE IF EXISTS `reports`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reports` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `description` varchar(100) DEFAULT NULL,
+  `reported_user_id` int NOT NULL,
+  `date` date NOT NULL DEFAULT (curdate()),
+  `reporter_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `user_id_idx` (`reported_user_id`),
+  KEY `reports_reporter_id_idx` (`reporter_id`),
+  CONSTRAINT `reports_reporter_id` FOREIGN KEY (`reporter_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `reports_user_id` FOREIGN KEY (`reported_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reports`
+--
+
+LOCK TABLES `reports` WRITE;
+/*!40000 ALTER TABLE `reports` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reports` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_hobbies`
+--
+
+DROP TABLE IF EXISTS `user_hobbies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_hobbies` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `hobby_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id_idx` (`user_id`),
+  KEY `interest_id_idx` (`hobby_id`),
+  CONSTRAINT `hobbies_hobby_id` FOREIGN KEY (`hobby_id`) REFERENCES `hobbies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `hobbies_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_hobbies`
+--
+
+LOCK TABLES `user_hobbies` WRITE;
+/*!40000 ALTER TABLE `user_hobbies` DISABLE KEYS */;
+INSERT INTO `user_hobbies` VALUES (74,2,26),(75,10,26),(76,11,26),(77,14,27),(78,16,27),(79,17,27),(80,12,28),(81,15,28),(82,16,28),(83,18,28);
+/*!40000 ALTER TABLE `user_hobbies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(50) NOT NULL,
+  `gender` enum('male','female','non-binary','other') NOT NULL,
+  `password` longtext NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `birthdate` date NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `role` enum('admin','user') NOT NULL DEFAULT 'user',
+  `interest` enum('male','female','non-binary','other','all') NOT NULL,
+  `avatar` varchar(65) NOT NULL,
+  `active` binary(1) NOT NULL DEFAULT '1',
+  `description` varchar(300) NOT NULL DEFAULT 'No description.',
+  `relationship` enum('anything','one-night-stand','significant-other','friend') NOT NULL DEFAULT 'anything',
+  `longitude` float DEFAULT NULL,
+  `latitude` float DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `features` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (21,'adminAccount@admin.com','male','$2y$10$i04837dvA0Y1c3.HdjVyT.DowmrE8rk8tku39mKBe3LyUyzt4PSl2','The Admin','1956-01-01','I Am','admin','male','6a218beacec5e_avatar.png',_binary '1','No description.','anything',NULL,NULL,NULL,NULL),(26,'yakuza@kiwami.yk','male','$2y$10$xurdQYIB3BK6.1aNE0Zb5unx.XxaQmYYao36DpwhcVjOMFFVczEVS','Kiryu','1978-06-20','Kazuma','user','female','6a340858963a7_avatar.png',_binary '1','\"Some are born with talent, and some aren\'t. That\'s true. But that said... Those with talent never make it through talent alone. You have to overcome.\"','anything',NULL,NULL,NULL,NULL),(27,'ada@wong.re','female','$2y$10$VnW3GY1ZYQ1SmkY8T4Hk1eNrCCQMyJ9jT1cAhQ7QHRoMICAVIHj.6','Wong','1974-11-06','Ada','user','all','6a340a735afa6_avatar.webp',_binary '1','It\'s important to remain calm and collected, even in the most extreme situations.','anything',48.8589,2.32004,'Paris',NULL),(28,'tifa@lockhart.com','female','$2y$10$lbDxEuIHR823p54gHUnbXeBNEd0LVEZqT5gI1lToPv9A2/ftq0.xO','Lockhart','1987-05-03','Tifa','user','male','6a340ca86e15f_avatar.jpg',_binary '1','\"They Took Everything From Us. Again.\"','anything',NULL,NULL,NULL,NULL),(36,'zegnor@hotmail.fr','male','$2y$10$3Tf6MFRGfUodOUPGgs7awO0A8UZaxNoL74g4FIK4HdXC8DZQdwB2a','Marc','2000-01-01','Dejussel','user','male','6a3e803d2811a_avatar.jpg',_binary '1','n,bhj','anything',47.9027,1.90861,'Orléans','{\"job\": null, \"astrology\": null, \"studies_level\": null}');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-06-28 14:15:24

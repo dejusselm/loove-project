@@ -31,3 +31,12 @@ How to config database in a DB software ( using previous .env values)
     Username: root ( or loove_user )
     Password: root ( or loove_password ) 
 
+
+# MailHog Use
+MailHog is used to intercept mails sent by Loove App.
+To see them, go to http://localhost:8025, make sure that MailHog is on, and then to Inbox. 
+
+# Admin account
+To make an admin account, you have to register like usual, and then in the database, set the account's role to admin in users table
+
+

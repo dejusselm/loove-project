@@ -25,18 +25,17 @@ This 'secret key' is a testing key
 ## There is no interface given to check the database. You have to use a software like MySql Workbench
 How to config database in a DB software ( using previous .env values)
 
-    Connection name: love_app
-    Hostname: 127.0.0.1
-    Port: 3306
-    Username: root ( or loove_user )
-    Password: root ( or loove_password ) 
-
+Connection name: love_app
+<br>Hostname: 127.0.0.1
+<br>Port: 3306
+<br>Username: root ( or loove_user )
+<br>Password: root ( or loove_password ) 
 
 # MailHog Use
 MailHog is used to intercept mails sent by Loove App.
-To see them, go to http://localhost:8025, make sure that MailHog is on, and then to Inbox. 
+<br> To see them, go to http://localhost:8025, make sure that MailHog is on, and then to Inbox. 
 
 # Admin account
-To make an admin account, you have to register like usual, and then in the database, set the account's role to admin in users table
+To make an admin account, you have to register like usual, and then in the database, in users table, set your account's role to 'admin'.
 
 

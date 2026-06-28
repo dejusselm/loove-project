@@ -262,7 +262,7 @@ class UserController extends Controller
     public function registerReport()
     {
         if (isset($_POST['submitReport'])) {
-            $reportedId = (int) $_POST['reported_profile_id'];
+            $reportedId = (int) $_POST['reported_user_id'];
             $reason = substr(htmlspecialchars($_POST['report_reason']), 0, 150) ?? 'No reason specified.';
             if (!$this->userRepo->wasReportedToday($this->userId, $reportedId)) {
                 $this->userRepo->registerReport($this->userId, $reason, $reportedId, );

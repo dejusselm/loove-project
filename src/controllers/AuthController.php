@@ -42,7 +42,7 @@ class AuthController extends Controller
                     if ($_SESSION["role"] == "admin") {
                         $this->logger->log(
                             LogType::ACTION,
-                            " User logged in.",
+                            "User logged in.",
                             $user->getId()
                         );
                         header("Location: /admin/adminDashboard");
@@ -75,55 +75,11 @@ class AuthController extends Controller
 
     public function register(): void
     {
-        if (isset($_POST['submitted'])) {
-            $email = $_POST["email"];
-            $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-            $birthdate = $_POST["birthdate"];
-            $gender = $_POST["gender"];
-            $interest = $_POST["interest"];
-            $firstName = $_POST["firstName"];
-            $lastName = $_POST["lastName"];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitted'])) {
 
-            $firstName = ucwords(strtolower($firstName), " -");
-            $lastName = ucwords(strtolower($lastName), " -");
+            $password = trim($_POST['password']);
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $genderEnum = Genders::tryFrom($gender ?? '');
-            if (!$genderEnum) {
-                $this->errorRedirection(
-                    'Invalid gender selection',
-                    '/preLogin/register'
-                );
-            }
-
-            $interestEnum = Interests::tryFrom($interest ?? '');
-            if (!$interestEnum) {
-                $this->errorRedirection(
-                    'Invalid interest selection',
-                    '/preLogin/register'
-                );
-            }
-
-            if (isset($_POST["birthdate"])) {
-                $currentDate = new DateTime();
-                $usersBirthday = new DateTime($birthdate);
-
-                $difference = $currentDate->diff($usersBirthday);
-                $usersAge = $difference->y;
-
-                if ($usersAge > 100 || $usersAge < 18) {
-                    $this->errorRedirection(
-                        'Age is incorrect',
-                        '/preLogin/register'
-                    );
-                }
-            }
-
-            if ($this->userRepo->emailExists($email)) {
-                $this->errorRedirection(
-                    'This email adress is already registered.',
-                    '/preLogin/register'
-                );
-            }
             if (isset($_FILES["avatar"])) {
                 // Prevents user from uploading files too heavy : php only allows 2Mo 
                 if ($_FILES["avatar"]["error"] === UPLOAD_ERR_INI_SIZE) {
@@ -135,6 +91,7 @@ class AuthController extends Controller
 
                 $temporaryName = $_FILES["avatar"]["tmp_name"];
                 $name = $_FILES["avatar"]["name"];
+
                 // Gets the extension to move it later
                 $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                 // Generates a unique id for the file name to prevent issues
@@ -144,6 +101,7 @@ class AuthController extends Controller
                 $finalLocation = ROOT_PATH . "/public/uploads/{$fileName}";
                 // Moves the uploaded file to the images folder
                 if (move_uploaded_file($temporaryName, $finalLocation)) {
+                    $_SESSION['temp_user_avatar'] = $fileName;
                 } else {
                     // Error while moving file
                     $this->errorRedirection(
@@ -152,6 +110,16 @@ class AuthController extends Controller
                     );
                 }
             }
+
+            $_SESSION['temp_user_data'] = [
+                'email' => trim($_POST['email']),
+                'password' => $hashedPassword,
+                'firstName' => trim($_POST['firstName']),
+                'lastName' => trim($_POST['lastName']),
+                'birthdate' => $_POST['birthdate'],
+                'gender' => $_POST['gender'],
+                'interest' => $_POST['interest']
+            ];
             $this->emailVerification();
         }
     }
@@ -161,8 +129,6 @@ class AuthController extends Controller
 
         $verificationCode = strval(rand(100000, 999999));
 
-        $_SESSION['temp_user_data'] = $_POST;
-        $_SESSION['temp_user_avatar'] = $_FILES['avatar'] ?? null;
         $_SESSION['email_verification_code'] = $verificationCode;
 
         mail($_POST['email'], "Your verification code", "Your code is: "
@@ -206,7 +172,9 @@ class AuthController extends Controller
             $correctCode = $_SESSION['email_verification_code'] ?? null;
 
             if ($correctCode && $enteredCode === $correctCode) {
+
                 $userData = $_SESSION['temp_user_data'];
+                $userAvatar = $_SESSION['temp_user_avatar'];
 
                 $this->userRepo->register([
                     'email' => $userData['email'],
@@ -216,8 +184,9 @@ class AuthController extends Controller
                     'gender' => $userData["gender"] ?? null,
                     'birthdate' => $userData['birthdate'],
                     'interest' => $userData["interest"] ?? null,
-                    'avatar' => $userData['fileName'] ?? 'default.png'
+                    'avatar' => $userAvatar
                 ]);
+
                 $to = $userData['email'];
                 $subject = "Welcome to Loove!";
                 $message = "Hello " . $userData['firstName'] .

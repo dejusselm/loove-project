@@ -1,0 +1,124 @@
+:root {
+    --white: #F0F0F0;
+    --light-pink: #EA638C;
+    --peach: #f6828c;
+    --bg-light-pink: #ffd9da;
+    --dark-pink: #89023E;
+    --dark-grey: #30343F;
+    --black: #1B2021;
+    --title-font: "Quicksand";
+    --font: "Roboto";
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: var(--font);
+    color: var(--black);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1.5em 1.2em 1em 1.2em;
+    gap: 1.5em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+header h1 {
+    font-family: var(--title-font);
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+main {
+    width: 100%;
+    max-width: 450px;
+    padding: 1.5em 1.2em;
+    flex: 1;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+}
+
+li {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+    padding: 0.8em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+li:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(137, 2, 62, 0.06);
+    border-color: rgba(234, 99, 140, 0.2);
+}
+
+li a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    gap: 1em;
+    overflow: hidden;
+}
+
+li img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--light-pink);
+    flex-shrink: 0;
+}
+
+li div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+li h3 {
+    font-family: var(--title-font);
+    font-size: 1.1em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+li div p,
+li div i {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

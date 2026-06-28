@@ -9,6 +9,7 @@ $backUrl = $from;
 include ROOT_PATH . 'views/components/head.php';
 ?>
 <title><?= $totalUnread > 0 ? "({$totalUnread}) Messages" : "Messages" ?></title>
+<link href="/views/style/messages.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,15 +27,15 @@ include ROOT_PATH . 'views/components/head.php';
                 </span>
             </div>
             <button class="close-flash" onclick="this.closest('.flash-modal').remove()" ">&times;</button>
-                        </div>
-                         <?php unset($_SESSION['flashMessage']); ?>
+                                    </div>
+                                     <?php unset($_SESSION['flashMessage']); ?>
         <?php endif; ?>
         <ul>
             <?php if (!empty($conversations)): ?>
-                                     <?php foreach ($conversations as $conversation): ?>
-                                                         <?php $isClosed = $conversation['isClosed'] ?? false; ?>
-                                                            <li  style=" display:flex; flex-direction:row; gap:1em;
-            align-items:center; margin-bottom:2em; list-style-type:none;">
+                                                 <?php foreach ($conversations as $conversation): ?>
+                                                                                 <?php $isClosed = $conversation['isClosed'] ?? false; ?>
+                                                                                    <li  style=" display:flex;
+            flex-direction:row; gap:1em; align-items:center; margin-bottom:2em; list-style-type:none;">
                     <?php if ($isClosed): ?>
                         <img style="width:50px; height: 50px; object-fit: cover; clip-path:circle();"
                             src="/public/uploads/<?= $conversation['profile']->getAvatar() ?>">

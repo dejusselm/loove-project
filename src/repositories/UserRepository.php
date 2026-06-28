@@ -217,7 +217,7 @@ class UserRepository extends BaseRepository
             }
         }
         $photosQuery = "
-        SELECT photo_path FROM user_photos 
+        SELECT photo_path FROM profile_photos 
         WHERE user_id = :user_id
     ";
         $photosReq = $this->sql->db->prepare($photosQuery);

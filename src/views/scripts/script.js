@@ -1,33 +1,3 @@
-let currentTab = 0;
-showTab(currentTab);
-
-function showTab(n) {
-    let tabs = document.getElementsByClassName("tab");
-    tabs[n].style.display = "block";
-    if (n == 0) {
-        document.getElementById("prevBtn").style.display = "none";
-    } else {
-        document.getElementById("prevBtn").style.display = "inline";
-    }
-    if (n == (tabs.length - 1)) {
-        document.getElementById("nextBtn").innerHTML = "Submit";
-    } else {
-        document.getElementById("nextBtn").innerHTML = "Next";
-    }
-    fixStepIndicator(n)
-}
-
-function nextPrev(n) {
-    let tabs = document.getElementsByClassName("tab");
-    if (n == 1 && !validateForm()) return false;
-    tabs[currentTab].style.display = "none";
-    currentTab = currentTab + n;
-    if (currentTab >= tabs.length) {
-        document.getElementById("regForm").submit();
-        return false;
-    }
-    showTab(currentTab);
-}
 
 function validatePassword(type) {
     const pswd = document.getElementById("password");
@@ -90,15 +60,6 @@ function validateForm() {
     return valid; // Returns the valid status
 }
 
-function fixStepIndicator(n) {
-    // This function removes the "active" class of all steps
-    let i, steps = document.getElementsByClassName("step");
-    for (i = 0; i < steps.length; i++) {
-        steps[i].className = steps[i].className.replace(" active", "");
-    }
-    // and adds the "active" class to the current step:
-    steps[n].className += " active";
-}
 
 // Deletes old error messages
 function clearError(input) {

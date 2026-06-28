@@ -1,0 +1,348 @@
+:root {
+    --white: #F0F0F0;
+    --peach: #f6828c;
+    --light-pink: #ffd9da;
+    --dark-pink: #89023E;
+    --dark-grey: #30343F;
+    --black: #1B2021;
+    --title-font: "Quicksand";
+    --font: "Roboto";
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font);
+    color: var(--black);
+}
+
+body {
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-parameters {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1.5em 1em 0.5em 1em;
+    gap: 1.5em;
+    flex-shrink: 0;
+}
+
+.header-parameters h1 {
+    font-family: var(--title-font);
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+.back-link i {
+    font-size: 28px;
+    color: var(--black);
+    transition: color 0.2s ease;
+}
+
+.back-link i:hover {
+    color: var(--dark-pink);
+}
+
+.main-parameters {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1em;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 380px;
+    gap: 1.2em;
+}
+
+.settings-card {
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 1.2em;
+    padding: 1.2em;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.settings-card h3 {
+    font-family: var(--title-font);
+    font-size: 1.2em;
+    margin-bottom: 0.8em;
+    color: var(--dark-grey);
+}
+
+.card-title-link {
+    text-decoration: none;
+}
+
+.card-title-link h3 {
+    color: var(--dark-pink);
+}
+
+.card-title-link h3:hover {
+    text-decoration: underline;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+.input-group label {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--dark-grey);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid var(--peach);
+    background-color: #fff;
+    border-radius: 0.8em;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--dark-pink);
+}
+
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.85em;
+    display: block;
+}
+
+button,
+.btn-premium,
+.btn-logout {
+    font-family: var(--title-font);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--dark-pink);
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 0.8em;
+    font-size: 1em;
+    margin-top: 0.5em;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #666;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 0.5em;
+    font-size: 0.9em;
+    margin-top: 0.8em;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
+}
+
+.membership-status {
+    padding: 12px;
+    border: 1px solid var(--peach);
+    border-radius: 0.8em;
+    background-color: var(--light-pink);
+}
+
+.membership-status p {
+    font-size: 1em;
+}
+
+.icon-crown {
+    color: gold;
+    margin-left: 4px;
+}
+
+.profile-views-section {
+    position: relative;
+}
+
+.total-views-counter {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--dark-pink);
+    margin-bottom: 1em;
+}
+
+.viewers-list {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    position: relative;
+    min-height: 80px;
+}
+
+.viewer-item {
+    text-align: center;
+    width: 65px;
+}
+
+.viewer-avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    clip-path: circle();
+    border: 2px solid var(--light-pink);
+}
+
+.viewer-name {
+    margin-top: 4px;
+    font-size: 0.8em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.blurred-img {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+.viewer-name.anonymized {
+    color: #999;
+}
+
+.viewer-blurred {
+    cursor: pointer;
+}
+
+.premium-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 5px 0;
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.95) 40%);
+}
+
+.overlay-title {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--black);
+    font-size: 0.95em;
+}
+
+.btn-premium {
+    display: inline-block;
+    background-color: var(--dark-pink);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.85em;
+    box-shadow: 0 4px 8px rgba(137, 2, 62, 0.2);
+}
+
+.btn-premium:hover {
+    transform: scale(1.03);
+}
+
+.actions-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 0.5em 0;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--white);
+    color: var(--dark-grey);
+    border-radius: 0.8em;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.btn-logout:hover {
+    background-color: #e5e5e5;
+}
+
+.delete-account-form {
+    width: 100%;
+}
+
+.btn-delete {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    color: #ff4d4d;
+    border: 1px dashed #ff4d4d;
+    border-radius: 0.8em;
+    font-size: 0.95em;
+}
+
+.btn-delete:hover {
+    background-color: #fff0f0;
+}
+
+.message-alert,
+.message-success {
+    padding: 10px;
+    border-radius: 0.5em;
+    font-size: 0.9em;
+    margin-bottom: 1em;
+}
+
+.message-alert {
+    background-color: #fff0f0;
+    color: #ff4d4d;
+    border: 1px solid #ffa3a3;
+}
+
+.message-success {
+    background-color: #f0fff4;
+    color: #2f855a;
+    border: 1px solid #9ae6b4;
+}
+
+.no-data-text {
+    font-style: italic;
+    color: #999;
+    font-size: 0.9em;
+}

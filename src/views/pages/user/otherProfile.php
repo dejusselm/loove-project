@@ -19,155 +19,212 @@ $backUrl = $from;
 
 include ROOT_PATH . 'views/components/head.php';
 ?>
-<title><?= $profile->getFirstName() ?>'s Profile</title>
+<title><?= htmlspecialchars($profile->getFirstName()) ?>'s Profile</title>
 <link href="/views/style/profile.css" rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <a href="<?= $backUrl ?>"><i class="fa-solid fa-arrow-left"></i></a>
+    <header class="profile-header">
+        <a href="<?= htmlspecialchars($backUrl) ?>" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
         <h1>Profile</h1>
     </header>
-    <main>
-        <section id="profile">
-            <img src="/public/uploads/<?php echo htmlspecialchars($profile->getAvatar()) ?>">
+
+    <main class="profile-main">
+        <section id="profile-section" class="profile-container">
+
+            <div class="avatar-container">
+                <img src="/public/uploads/<?php echo htmlspecialchars($profile->getAvatar()) ?>" class="main-avatar"
+                    alt="Main avatar">
+            </div>
+
             <?php if (!$matchController->hasUserInteracted($profileId)): ?>
-                <article>
-                    <i class="fa-warning fa-solid" style="cursor: pointer;"
-                        onclick="openReportModal(<?= $profile->getId() ?>, '<?= htmlspecialchars($profile->getFirstName()) ?>')"></i>
-                    <a href="dashboard?action=dislike&profile_id=<?= $profileId; ?>">
-                        <i class=" fa-solid fa-circle-xmark"></i>
+
+                <article class="match-actions-container">
+                    <a href="otherProfile?id=<?= $profile->getId() ?>&action=dislike&profile_id=<?= $profile->getId() ?>&from=<?= urlencode($from) ?>"
+                        id="reject" class="match-btn btn-reject">
+                        <i class="fa-solid fa-xmark"></i>
                     </a>
-                    <a href="dashboard?action=like&profile_id=<?= $profileId; ?>">
+                    <a href="otherProfile?id=<?= $profile->getId() ?>&action=like&profile_id=<?= $profile->getId() ?>&from=<?= urlencode($from) ?>"
+                        id="like" class="match-btn btn-like">
                         <i class="fa-solid fa-heart"></i>
                     </a>
                 </article>
             <?php endif; ?>
-            <?php if ($userController->user->isMember()): ?>
-                <a href="/user/chat?id=<?= $profileId ?>"><i class="fa-paper-plane fa-solid"></i></a>
-            <?php endif; ?>
-
-            <article>
-                <h3><?= $profile->getFirstName() ?></h3>
-                <?php if ($profile->isMember()) {
-                    echo '<div class="membership"><h3> Member </h3><i class="fa-crown fa-solid"></i></div>';
-                } ?>
-                <p>
-                    <?= $profile->getAge(), ' yo' ?>
-                    <?php if ($profile->getGender() == 'female') {
-                        echo '<i class="fa-solid fa-venus" style=color:purple;></i>';
-                    } else if ($profile->getGender() == 'male') {
-                        echo '<i class="fa-solid fa-mars" style="color:blue"></i>';
-                    } else {
-                        echo '<i class="fa-solid fa-genderless" style="color:yellow"></i>';
-                    }
-                    ?>
-                </p>
-
+            <article class="report-container-box">
+                <i class="fa-warning fa-solid btn-trigger-report"
+                    onclick="openReportModal(<?= $profile->getId() ?>)"></i>
             </article>
-            <article id="gallery-section">
+
+
+            <article id="gallery-section" class="profile-card">
                 <div class="gallery-header">
-                    <p><i class="fa-solid fa-images"></i> My Photos</p>
+                    <p><i class="fa-solid fa-images"></i> Photos</p>
                 </div>
                 <div class="profile-gallery">
                     <?php
-                    if (!empty($photos)):
-                        foreach ($photos as $photo): ?>
+                    if (!empty($userPhotos)):
+                        foreach ($userPhotos as $photo): ?>
                             <div class="gallery-item">
                                 <img src="/public/uploads/<?= htmlspecialchars($photo['photo_path']) ?>" alt="Secondary photo">
                             </div>
                         <?php endforeach;
-                    endif; ?>
+                    endif;
+
+                    $emptySlots = 4 - (isset($userPhotos) ? count($userPhotos) : 0);
+                    for ($i = 0; $i < $emptySlots; $i++): ?>
+                        <div class="gallery-item empty-slot-view">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                    <?php endfor; ?>
                 </div>
             </article>
-            <article class="modify" id="location">
-                <p><i class="fa-solid fa-location-dot"></i>Lives in
-                    <?= $profile->getCity() ?? "Not specified."; ?>
-                </p>
 
+            <h3 class="profile-name">
+                <?= htmlspecialchars($profile->getFirstName()) . ' ' . htmlspecialchars($profile->getLastName()) ?>
+            </h3>
+
+            <?php if ($profile->isMember()): ?>
+                <div class="membership-badge">
+                    <h3>Member</h3>
+                    <i class="fa-crown fa-solid"></i>
+                </div>
+            <?php endif; ?>
+
+            <p class="profile-age-gender">
+                <?= $profile->getAge(), ' yo' ?>
+                <?php if ($profile->getGender() == 'female') {
+                    echo '<i class="fa-solid fa-venus icon-gender-female"></i>';
+                } else if ($profile->getGender() == 'male') {
+                    echo '<i class="fa-solid fa-mars icon-gender-male"></i>';
+                } else {
+                    echo '<i class="fa-solid fa-genderless icon-gender-other"></i>';
+                }
+                ?>
+            </p>
+
+            <article class="info-view-card" id="location">
+                <p><i class="fa-solid fa-location-dot"></i> Lives in
+                    <?= htmlspecialchars($profile->getCity() ?? "Not defined"); ?>
+                </p>
             </article>
-            <article class="modify" id="description">
+
+            <article class="info-view-card" id="description">
                 <p><i class="fa-solid fa-quote-left"></i>
-                    <?= $profile->getDescription() ?? "No description."; ?>
+                    <?= htmlspecialchars($profile->getDescription() ?? "No description provided."); ?>
                     <i class="fa-solid fa-quote-right"></i>
                 </p>
             </article>
-            <article class="modify" id="interest">
-                <p><i class="fa-solid fa-heart"></i></i>Looking for a
-                    <?php if ($profile->getInterest() !== 'all') {
-                        echo htmlspecialchars($profile->getInterest()) . ' ';
+
+            <article class="info-view-card" id="interest">
+                <p>
+                    <i class="fa-solid fa-heart"></i>
+
+                    <?php
+                    $gender = $profile->getInterest();
+                    $relationship = $profile->getRelationship();
+
+                    if ($gender === 'male') {
+                        $lookingFor = 'Looking for a man';
+                    } elseif ($gender === 'female') {
+                        $lookingFor = 'Looking for a woman';
+                    } elseif ($gender === 'other') {
+                        $lookingFor = 'Looking for a non-binary person';
+                    } else {
+                        $lookingFor = 'Open to everyone';
                     }
-                    echo $profile->getRelationship(); ?> !
+
+                    echo $lookingFor;
+
+                    if ($relationship !== 'anything') {
+                        switch ($relationship) {
+                            case 'friend':
+                                echo ' for friendship';
+                                break;
+                            case 'significant-other':
+                                echo ' for a serious relationship';
+                                break;
+                            case 'one-night-stand':
+                                echo ' for a one night stand';
+                                break;
+
+                            default:
+                                echo ' (' . htmlspecialchars($relationship) . ')';
+                        }
+                    }
+                    echo '.';
+                    ?>
                 </p>
             </article>
-            <article class="modify" id="hobbies">
-                <div>
-                    <p><i class="fa-solid fa-star"></i>Hobbies / interests :</p>
-                    <ul>
-                        <?php if (!empty($hobbies)): ?>
-                            <?php foreach ($hobbies as $hobby): ?>
-                                <li><?= htmlspecialchars($hobby->getName()) ?></li>
+
+            <article class="info-view-card" id="hobbies">
+                <div class="hobbies-content">
+                    <p><i class="fa-solid fa-star"></i> Hobbies / interests :</p>
+                    <ul class="hobbies-list">
+                        <?php if (!empty($userHobbies)): ?>
+                            <?php foreach ($userHobbies as $hobby): ?>
+                                <li class="hobby-tag-item"><?= htmlspecialchars($hobby->getName()) ?></li>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <li><i class='fa-solid fa-circle-exclamation'></i> No hobbies selected yet !</li>
+                            <li>No hobbies selected yet !</li>
                         <?php endif; ?>
                     </ul>
                 </div>
             </article>
-            <article class="modify" id="advanced-features">
-                <div>
+
+            <?php $features = $profile->getFeatures(); ?>
+            <article class="info-view-card" id="advanced-features">
+                <div class="advanced-content">
                     <p><i class="fa-solid fa-wand-magic-sparkles"></i> Additional Information :</p>
-                    <ul style="list-style: none; padding-left: 1.5em; margin: 0;">
+                    <ul class="advanced-list">
                         <li><strong>Astrology :</strong>
-                            <?= htmlspecialchars($profile->getFeatures()['astrology'] ?? "Not defined "); ?>
+                            <?= htmlspecialchars($features['astrology'] ?? "Not defined"); ?>
                         </li>
                         <li><strong>Education :</strong>
-                            <?= htmlspecialchars($profile->getFeatures()['studies_level'] ?? "Not defined "); ?>
+                            <?= htmlspecialchars($features['studies_level'] ?? "Not defined"); ?>
                         </li>
                         <li><strong>Profession :</strong>
-                            <?= htmlspecialchars($profile->getFeatures()['job'] ?? "Not defined"); ?>
+                            <?= htmlspecialchars($features['job'] ?? "Not defined"); ?>
                         </li>
                     </ul>
                 </div>
             </article>
         </section>
+    </main>
 
-        <div id="reportProfileModal" class="modal"
-            style="display:none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-content"
-                style="background-color: #fff; margin: 15% auto; padding: 20px; border-radius: 8px; width: 350px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: sans-serif;">
-                <h3 style="color: #e74c3c; margin-top: 0;"><i class="fa-solid fa-triangle-exclamation"></i> Report
-                    Profile</h3>
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeReportModal()">&times;</span>
+            <h3>Report this profile</h3>
 
-                <form action="dashboard" method="POST">
-                    <input type="hidden" name="reported_profile_id" id="reportedProfileId" value="">
+            <form action="report" method="POST" id="report-form" class="modal-form">
+                <input type="hidden" name="reported_user_id" id="reportedUserId" value="">
 
-                    <p id="reportModalMessage" style="font-size: 0.95em; color: #333;"></p>
-
-                    <div style="margin-bottom: 15px;">
-                        <label for="reportReason"
-                            style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9em;">Reason for
-                            report :</label>
+                <div class="form-group-textarea">
+                    <label for="reportReason">Reason for report :</label>
+                    <div class="textarea-wrapper">
                         <textarea name="report_reason" id="reportReason" rows="3" maxlength="150"
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: none;"
                             placeholder="Why are you reporting this profile? (Fake, inappropriate...)"
                             required></textarea>
                     </div>
+                </div>
 
-                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                        <button type="button" onclick="closeReportModal()"
-                            style="padding: 8px 15px; background-color: #bdc3c7; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                            Cancel
-                        </button>
-                        <button type="submit" name="submitReport"
-                            style="padding: 8px 15px; background-color: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
-                            Send Report
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="modal-action-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeReportModal()">Cancel</button>
+                    <button type="submit" name="submitReport" class="btn-submit-report">Send Report</button>
+                </div>
+            </form>
         </div>
-    </main>
+    </div>
+
+    <script>
+        function openReportModal(userId) {
+            document.getElementById('reportedUserId').value = userId;
+            document.getElementById('report-modal').style.display = 'flex';
+        }
+        function closeReportModal() {
+            document.getElementById('report-modal').style.display = 'none';
+        }
+    </script>
     <script src="/views/scripts/notificationsScript.js"></script>
 </body>
 

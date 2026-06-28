@@ -1,0 +1,245 @@
+:root {
+    --white: #F0F0F0;
+    --lighter-pink: #f89fba;
+    --light-pink: #EA638C;
+    --peach: #f6828c;
+    --bg-light-pink: #ffd9da;
+    --dark-pink: #89023E;
+    --dark-grey: #30343F;
+    --black: #1B2021;
+    --gray-muted: #7f8c8d;
+    --bg-app: #f9fbfd;
+    --title-font: "Quicksand", sans-serif;
+    --font: "Roboto", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-app);
+    font-family: var(--font);
+    color: var(--black);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    max-width: 460px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1.5em 1.2em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 1.5em;
+}
+
+header h1 {
+    font-family: var(--title-font);
+    font-size: 1.4em;
+    font-weight: 700;
+}
+
+header a {
+    color: var(--dark-pink);
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+main {
+    width: 100%;
+    max-width: 460px;
+    padding: 1.5em 1.2em;
+    flex: 1;
+}
+
+.membership-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    width: 100%;
+}
+
+.membership-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 1.5em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+}
+
+.premium-card {
+    border: 2px solid var(--light-pink);
+    background: linear-gradient(145deg, #ffffff, #fffdfd);
+    box-shadow: 0 8px 24px rgba(234, 99, 140, 0.1);
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.card-header h3 {
+    font-family: var(--title-font);
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+.price {
+    font-size: 1.8em;
+    font-weight: 700;
+    font-family: var(--title-font);
+    color: var(--dark-pink);
+}
+
+.price span {
+    font-size: 0.5em;
+    color: var(--gray-muted);
+    font-weight: 400;
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--light-pink);
+    color: #ffffff;
+    font-size: 0.75em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.features-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+}
+
+.features-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95em;
+    color: #4a4a4a;
+    line-height: 1.3;
+}
+
+.features-list i {
+    font-size: 1em;
+    width: 18px;
+    text-align: center;
+}
+
+.text-pink {
+    color: var(--light-pink);
+}
+
+.text-gold {
+    color: #f1c40f;
+}
+
+.text-muted {
+    color: #cbd5e1;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 13px;
+    border-radius: 25px;
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 0.95em;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+.btn-current {
+    background-color: #f1f5f9;
+    color: var(--gray-muted);
+    cursor: default;
+}
+
+.btn-premium {
+    background-image: linear-gradient(135deg, var(--dark-pink), var(--light-pink));
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(137, 2, 62, 0.25);
+}
+
+.btn-premium:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(234, 99, 140, 0.4);
+    opacity: 0.95;
+}
+
+.btn-premium:active {
+    transform: translateY(1px);
+}
+
+.btn-active-premium {
+    background-color: #e2f8f0;
+    color: #14b8a6;
+    gap: 8px;
+    cursor: default;
+}
+
+.cancel-notice {
+    font-size: 0.85em;
+    color: var(--gray-muted);
+    text-align: center;
+    line-height: 1.5;
+    padding: 0 1em;
+    margin-top: 0.5em;
+}
+
+.flash-modal {
+    background-color: var(--bg-light-pink);
+    border: 1px solid rgba(234, 99, 140, 0.2);
+    border-radius: 14px;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.flash-modal div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark-pink);
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+.close-flash {
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    color: var(--dark-pink);
+    cursor: pointer;
+    line-height: 1;
+}

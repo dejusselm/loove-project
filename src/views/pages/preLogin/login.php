@@ -15,31 +15,37 @@ include ROOT_PATH . 'views/components/head.php';
     </header>
     <main>
         <section>
+            <h1>Login</h1>
+
+            <?php if (isset($_SESSION['errorMessage'])): ?>
+                <div class="error-box">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>
+                        <?php
+                        echo $_SESSION['errorMessage'];
+                        unset($_SESSION['errorMessage']);
+                        ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+
             <form action="/preLogin/login" method="POST">
-                <h1>Login :</h1>
-                <div class="container">
-                    <?php if (isset($_SESSION['errorMessage'])): ?>
-                        <div style="color: red;">
-                            <?php
-                            echo $_SESSION['errorMessage'];
-                            unset($_SESSION['errorMessage']);
-                            ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <label for="email">Email</label>
-                    <input type="email" name="email" placeholder="Email..." required>
-
-                    <label for="password">Password</label>
-                    <input type="password" name="password" placeholder="Password..." required>
-                    <button type="submit">Login</button>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email..." required>
                 </div>
 
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password..." required>
+                </div>
 
+                <button type="submit" class="btn-primary" style="margin-top: 1em;">Login</button>
             </form>
+
+            <p class="footer-link">Don't have an account yet? <a href="/preLogin/register">Register</a></p>
         </section>
     </main>
-    <span><a href="/preLogin/register">Register page</a></span>
 </body>
 
 </html>

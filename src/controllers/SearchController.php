@@ -45,8 +45,8 @@ class SearchController extends Controller
             'hobbies' => $_POST['hobbies'] ?? [],
             'city' => $_POST['city'] ?? '',
             'radius' => $radius,
-            'minAge' => $_POST['minAge'] ?? 18,
-            'maxAge' => $_POST['maxAge'] ?? 100,
+            'minAge' => !empty($_POST['minAge']) ? (int) $_POST['minAge'] : 18,
+            'maxAge' => !empty($_POST['maxAge']) ? (int) $_POST['maxAge'] : 100,
 
             'astrology' => '',
             'studies_level' => '',

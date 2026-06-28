@@ -11,20 +11,23 @@ include ROOT_PATH . 'views/components/head.php';
 </head>
 
 <body>
-    <header>
-        <a href="dashboard"><i class="fa-solid fa-arrow-left"></i></a>
+    <header class="profile-header">
+        <a href="dashboard" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
         <h1>Profile</h1>
-        <div>
-            <a href="parameters"><i class="fa-solid fa-gear"></i></a><br><br>
+        <div class="header-actions">
+            <a href="parameters" class="settings-link"><i class="fa-solid fa-gear"></i></a>
         </div>
     </header>
-    <main>
-        <section id="profile">
+
+    <main class="profile-main">
+        <section id="profile-section" class="profile-container">
+
             <div class="avatar-container">
-                <img src="/public/uploads/<?php echo htmlspecialchars($user->getAvatar()) ?>" class="main-avatar">
+                <img src="/public/uploads/<?php echo htmlspecialchars($user->getAvatar()) ?>" class="main-avatar"
+                    alt="Avatar principal">
             </div>
 
-            <article id="gallery-section">
+            <article id="gallery-section" class="profile-card">
                 <div class="gallery-header">
                     <p><i class="fa-solid fa-images"></i> My Photos</p>
                 </div>
@@ -47,86 +50,120 @@ include ROOT_PATH . 'views/components/head.php';
                 </div>
             </article>
 
-            <h3><?= $user->getFirstName(), ' ', $user->getLastName() ?></h3>
+            <h3 class="profile-name"><?= $user->getFirstName(), ' ', $user->getLastName() ?></h3>
 
-            <?php if ($user->isMember()) {
-                echo '<div class="membership"><h3> Member </h3><i class="fa-crown fa-solid"></i></div>';
-            } ?>
-            <p>
+            <?php if ($user->isMember()): ?>
+                <div class="membership-badge">
+                    <h3>Member</h3>
+                    <i class="fa-crown fa-solid"></i>
+                </div>
+            <?php endif; ?>
+
+            <p class="profile-age-gender">
                 <?= $user->getAge(), ' yo' ?>
                 <?php if ($user->getGender() == 'female') {
-                    echo '<i class="fa-solid fa-venus" style=color:purple;></i>';
+                    echo '<i class="fa-solid fa-venus icon-gender-female"></i>';
                 } else if ($user->getGender() == 'male') {
-                    echo '<i class="fa-solid fa-mars" style="color:blue"></i>';
+                    echo '<i class="fa-solid fa-mars icon-gender-male"></i>';
                 } else {
-                    echo '<i class="fa-solid fa-genderless" style="color:yellow"></i>';
+                    echo '<i class="fa-solid fa-genderless icon-gender-other"></i>';
                 }
                 ?>
             </p>
 
-            <article class="modify" id="location">
-                <p><i class="fa-solid fa-location-dot"></i>Lives in
+            <article class="modify-card" id="location">
+                <p><i class="fa-solid fa-location-dot"></i> Lives in
                     <?= $user->getCity() ?? "( <i class='fa-solid fa-circle-exclamation'></i> field is not defined. )"; ?>
                 </p>
                 <?php if (isset($_SESSION['errorMessage'])) {
-                    echo $_SESSION['errorMessage'];
+                    echo '<span class="error-msg">' . $_SESSION['errorMessage'] . '</span>';
                 } ?>
-                <i class="fa-solid fa-pencil" onclick="openModal('location')"></i>
+                <i class="fa-solid fa-pencil edit-icon" onclick="openModal('location')"></i>
             </article>
 
-            <article class="modify" id="description">
+            <article class="modify-card" id="description">
                 <p><i class="fa-solid fa-quote-left"></i>
                     <?= $user->getDescription() ?? " <i class='fa-solid fa-circle-exclamation'></i> field is not defined."; ?>
                     <i class="fa-solid fa-quote-right"></i>
                 </p>
-                <i class="fa-solid fa-pencil" onclick="openModal('description')"></i>
+                <i class="fa-solid fa-pencil edit-icon" onclick="openModal('description')"></i>
             </article>
 
-            <article class="modify" id="interest">
-                <p><i class="fa-solid fa-heart"></i>Looking for a
-                    <?php if ($user->getInterest() !== 'all') {
-                        echo ' ' . htmlspecialchars($user->getInterest()) . ' ';
+            <article class="modify-card" id="interest">
+                <p>
+                    <i class="fa-solid fa-heart"></i>
+
+                    <?php
+                    $gender = $user->getInterest();
+                    $relationship = $user->getRelationship();
+
+                    if ($gender === 'male') {
+                        $lookingFor = 'Looking for a man';
+                    } elseif ($gender === 'female') {
+                        $lookingFor = 'Looking for a woman';
+                    } elseif ($gender === 'other') {
+                        $lookingFor = 'Looking for a non-binary person';
+                    } else {
+                        $lookingFor = 'Open to everyone';
                     }
-                    if ($user->getRelationship() !== 'anything') {
-                        echo ' ' . htmlspecialchars($user->getRelationship()) . ' ';
-                    } ?> !
+
+                    echo $lookingFor;
+
+                    if ($relationship !== 'anything') {
+                        switch ($relationship) {
+                            case 'friend':
+                                echo ' for friendship';
+                                break;
+                            case 'significant-other':
+                                echo ' for a serious relationship';
+                                break;
+                            case 'one-night-stand':
+                                echo ' for a one night stand';
+                                break;
+
+                            default:
+                                echo ' (' . htmlspecialchars($relationship) . ')';
+                        }
+                    }
+                    echo '.';
+                    ?>
                 </p>
-                <i class="fa-solid fa-pencil" onclick="openModal('preferences')"></i>
+                <i class="fa-solid fa-pencil edit-icon" onclick="openModal('preferences')"></i>
             </article>
 
-            <article class="modify" id="hobbies">
-                <div>
-                    <p><i class="fa-solid fa-star"></i>Hobbies / interests :</p>
-                    <ul>
+            <article class="modify-card" id="hobbies">
+                <div class="hobbies-content">
+                    <p><i class="fa-solid fa-star"></i> Hobbies / interests :</p>
+                    <ul class="hobbies-list">
                         <?php if (!empty($userHobbies)): ?>
                             <?php foreach ($userHobbies as $hobby): ?>
-                                <li><?= htmlspecialchars($hobby->getName()) ?></li>
+                                <li class="hobby-tag-item"><?= htmlspecialchars($hobby->getName()) ?></li>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <li><i class='fa-solid fa-circle-exclamation'></i> No hobbies selected yet !</li>
                         <?php endif; ?>
                     </ul>
                 </div>
-                <i class="fa-solid fa-pencil" onclick="openModal('hobby')"></i>
+                <i class="fa-solid fa-pencil edit-icon" onclick="openModal('hobby')"></i>
             </article>
 
             <?php $features = $user->getFeatures(); ?>
-            <article class="modify" id="advanced-features">
-                <div>
+            <article class="modify-card" id="advanced-features">
+                <div class="advanced-content">
                     <p><i class="fa-solid fa-wand-magic-sparkles"></i> Additional Information :</p>
-                    <ul style="list-style: none; padding-left: 1.5em; margin: 0;">
+                    <ul class="advanced-list">
                         <li><strong>Astrology :</strong>
-                            <?= htmlspecialchars($features['astrology'] ?? "Not defined 🌌"); ?>
+                            <?= htmlspecialchars($features['astrology'] ?? "Not defined"); ?>
                         </li>
                         <li><strong>Education :</strong>
-                            <?= htmlspecialchars($features['studies_level'] ?? "Not defined 🎓"); ?>
+                            <?= htmlspecialchars($features['studies_level'] ?? "Not defined"); ?>
                         </li>
                         <li><strong>Profession :</strong>
-                            <?= htmlspecialchars($features['job'] ?? "Not defined 💼"); ?>
+                            <?= htmlspecialchars($features['job'] ?? "Not defined"); ?>
                         </li>
                     </ul>
                 </div>
-                <i class="fa-solid fa-pencil" onclick="openModal('advanced')"></i>
+                <i class="fa-solid fa-pencil edit-icon" onclick="openModal('advanced')"></i>
             </article>
         </section>
     </main>
@@ -135,11 +172,12 @@ include ROOT_PATH . 'views/components/head.php';
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('location')">&times;</span>
             <h3>Change your city :</h3>
-            <form action="profile" method="POST" id="location-form">
-                <div>
+            <form action="profile" method="POST" id="location-form" class="modal-form">
+                <div class="textarea-wrapper">
                     <textarea name="location" placeholder="Paris..." required autofocus></textarea>
                 </div>
-                <button type="submit" name="locationModified"><i class="fa-solid fa-check"></i></button>
+                <button type="submit" name="locationModified" class="btn-submit"><i
+                        class="fa-solid fa-check"></i></button>
             </form>
         </div>
     </div>
@@ -148,12 +186,13 @@ include ROOT_PATH . 'views/components/head.php';
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('description')">&times;</span>
             <h3>Change your description ( 200 characters max ):</h3>
-            <form action="profile" method="POST" id="description-form">
-                <div id="textarea">
+            <form action="profile" method="POST" id="description-form" class="modal-form">
+                <div id="textarea" class="textarea-wrapper">
                     <textarea name="description" maxlength="200" required
                         placeholder="<?= htmlspecialchars($user->getDescription() ?? ""); ?> " autofocus></textarea>
                 </div>
-                <button type="submit" name="descriptionModified"><i class="fa-solid fa-check"></i></button>
+                <button type="submit" name="descriptionModified" class="btn-submit"><i
+                        class="fa-solid fa-check"></i></button>
             </form>
         </div>
     </div>
@@ -162,7 +201,7 @@ include ROOT_PATH . 'views/components/head.php';
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('preferences')">&times;</span>
             <h3>Change what you're looking for:</h3>
-            <form action="profile" method="POST" id="preferences-form">
+            <form action="profile" method="POST" id="preferences-form" class="modal-form">
                 <span class="field-title">Gender interest :</span>
                 <div class="radio-group">
                     <div class="radio-item">
@@ -182,36 +221,28 @@ include ROOT_PATH . 'views/components/head.php';
                         <label for="interestChoice4">All</label>
                     </div>
                 </div>
+
                 <span class="field-title">Relationship :</span>
-                <div>
-                    <div class="radio-group">
-                        <?php
-                        $signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-                        $currentAstro = $features['astrology'] ?? '';
-                        foreach ($signs as $sign): ?>
-                            <option value="<?= $sign ?>" <?= $currentAstro === $sign ? 'selected' : '' ?>>
-                                <?= $sign ?>
-                            </option>
-                        <?php endforeach; ?>
-                        <div class="radio-item">
-                            <input type="radio" id="relationChoice1" name="relation" value="anything" checked />
-                            <label for="relationChoice1">Anything</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="relationChoice2" name="relation" value="significant-other" />
-                            <label for="relationChoice2">Significant other</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="relationChoice3" name="relation" value="friend" />
-                            <label for="relationChoice3">Friend</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="relationChoice4" name="relation" value="one-night-stand" />
-                            <label for="relationtChoice4">One night stand</label>
-                        </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="relationChoice1" name="relation" value="anything" checked />
+                        <label for="relationChoice1">Anything</label>
                     </div>
-                    <button type="submit" name="preferencesModified"><i class="fa-solid fa-check"></i></button>
+                    <div class="radio-item">
+                        <input type="radio" id="relationChoice2" name="relation" value="significant-other" />
+                        <label for="relationChoice2">Significant other</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="relationChoice3" name="relation" value="friend" />
+                        <label for="relationChoice3">Friend</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="relationChoice4" name="relation" value="one-night-stand" />
+                        <label for="relationtChoice4">One night stand</label>
+                    </div>
                 </div>
+                <button type="submit" name="preferencesModified" class="btn-submit"><i
+                        class="fa-solid fa-check"></i></button>
             </form>
         </div>
     </div>
@@ -220,7 +251,7 @@ include ROOT_PATH . 'views/components/head.php';
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('hobby')">&times;</span>
             <h3>Select your hobbies / interests (5 max)</h3>
-            <form action="profile" method="POST" id="hobby-form">
+            <form action="profile" method="POST" id="hobby-form" class="modal-form">
                 <div class="tags-div">
                     <?php foreach ($allHobbies as $hobby): ?>
                         <div class="hobby-tag">
@@ -232,7 +263,7 @@ include ROOT_PATH . 'views/components/head.php';
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <button type="submit" name="hobbiesModified" class="btn-save-hobbies"><i
+                <button type="submit" name="hobbiesModified" class="btn-save-hobbies btn-submit"><i
                         class="fa-solid fa-check"></i></button>
             </form>
         </div>
@@ -242,11 +273,10 @@ include ROOT_PATH . 'views/components/head.php';
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('advanced')">&times;</span>
             <h3>Update your advanced info :</h3>
-            <form action="profile" method="POST" id="advanced-form">
-                <div style="margin-bottom: 15px;">
-                    <label for="astrology" style="display:block; margin-bottom:5px; font-weight:bold;">Astrological Sign
-                        :</label>
-                    <select name="astrology" id="astrology" style="width: 100%; padding: 8px; border-radius: 5px;">
+            <form action="profile" method="POST" id="advanced-form" class="modal-form">
+                <div class="form-group-select">
+                    <label for="astrology">Astrological Sign :</label>
+                    <select name="astrology" id="astrology" class="modal-select">
                         <option value="">Select your sign...</option>
                         <?php
                         $signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
@@ -256,11 +286,9 @@ include ROOT_PATH . 'views/components/head.php';
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label for="studies_level" style="display:block; margin-bottom:5px; font-weight:bold;">Education
-                        Level :</label>
-                    <select name="studies_level" id="studies_level"
-                        style="width: 100%; padding: 8px; border-radius: 5px;">
+                <div class="form-group-select">
+                    <label for="studies_level">Education Level :</label>
+                    <select name="studies_level" id="studies_level" class="modal-select">
                         <option value="">Select your education level...</option>
                         <?php
                         $levels = ['High School', 'Bachelor', 'Master', 'PhD', 'Self-taught', 'Other'];
@@ -271,13 +299,13 @@ include ROOT_PATH . 'views/components/head.php';
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div style="margin-bottom: 20px;">
-                    <label for="job" style="display:block; margin-bottom:5px; font-weight:bold;">Profession :</label>
+                <div class="form-group-select">
+                    <label for="job">Profession :</label>
                     <input type="text" name="job" id="job" maxlength="50" placeholder="Developer, Nurse, Student..."
-                        value="<?= htmlspecialchars($features['job'] ?? ''); ?>"
-                        style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;">
+                        value="<?= htmlspecialchars($features['job'] ?? ''); ?>" class="modal-input-text">
                 </div>
-                <button type="submit" name="featuresModified"><i class="fa-solid fa-check"></i> Save</button>
+                <button type="submit" name="featuresModified" class="btn-submit"><i class="fa-solid fa-check"></i>
+                    Save</button>
             </form>
         </div>
     </div>
@@ -287,18 +315,17 @@ include ROOT_PATH . 'views/components/head.php';
             <span class="close-modal" onclick="closeModal('photos')">&times;</span>
             <h3>Manage your photos</h3>
 
-            <form action="profile" method="POST" enctype="multipart/form-data" id="photos-form">
-                <div style="margin-bottom: 20px; text-align: center;">
-                    <label for="new_photo"
-                        style="display:block; margin-bottom:10px; font-weight:bold; text-align:left;">Upload a new
-                        picture :</label>
+            <form action="profile" method="POST" enctype="multipart/form-data" id="photos-form" class="modal-form">
+                <div class="photo-upload-group">
+                    <label for="photo">Upload a new picture :</label>
                     <input type="file" name="photo" id="photo" accept="image/png, image/jpeg, image/webp"
-                        onchange="handlePhotoChange(this,'photo')" required
-                        style=" width:100%; padding:10px; border: 1px dashed #ccc;">
-                    <img id="photoPreview" src="#" alt="Photo Preview"
-                        style="display: none; width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                        onchange="handlePhotoChange(this,'photo')" required class="file-input-dashed">
+                    <div class="preview-container">
+                        <img id="photoPreview" src="#" alt="Photo Preview" class="photo-preview-circle">
+                    </div>
                 </div>
-                <button type="submit" name="photoModified"><i class="fa-solid fa-cloud-arrow-up"></i> Upload</button>
+                <button type="submit" name="photoModified" class="btn-submit"><i class="fa-solid fa-cloud-arrow-up"></i>
+                    Upload</button>
             </form>
         </div>
     </div>

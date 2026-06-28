@@ -9,7 +9,7 @@ $controller->handleAction();
 include ROOT_PATH . 'views/components/head.php';
 ?>
 <title>Admin Dashboard</title>
-<link href="/views/style/profile.css" rel="stylesheet">
+<link href="/views/style/admin.css" rel="stylesheet">
 </head>
 
 <body>

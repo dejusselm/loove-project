@@ -19,7 +19,6 @@ if ($contactId) {
 extract($chatController->show());
 
 $lastSenderId = null;
-
 if (!empty($chats)):
     foreach ($chats as $chat):
 

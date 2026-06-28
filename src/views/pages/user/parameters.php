@@ -19,130 +19,123 @@ if (isset($_POST['cancelSubscription'])) {
 include ROOT_PATH . 'views/components/head.php';
 ?>
 <title>Parameters</title>
+<link href="/views/style/parameters.css" rel="stylesheet">
 </head>
 
 <body>
-    <header style="display:flex">
-        <a href="profile"><i class="fa-solid fa-arrow-left" style="font-size:50px"></i></a>
+    <header class="header-parameters">
+        <a href="profile" class="back-link"><i class="fa-solid fa-arrow-left"></i></a>
         <h1>Parameters</h1>
     </header>
 
-    <main>
-        <section>
-            <article>
+    <main class="main-parameters">
+        <section class="settings-section">
+
+            <article class="settings-card">
                 <h3>Email and password</h3>
 
                 <?php if (isset($_SESSION['passwordMessage'])): ?>
-                    <p><?= $_SESSION['passwordMessage'] ?>
-                    </p>
+                    <p class="message-alert"><?= $_SESSION['passwordMessage'] ?></p>
                     <?php unset($_SESSION['passwordMessage']); ?>
                 <?php endif; ?>
 
-                <form action="parameters" method="POST">
-                    <label>Current password</label>
-                    <p><input type="password" id="currentPassword" name="currentPassword" placeholder="Password..."
-                            oninput="clearError(this)" required minlength="12"></p>
+                <form action="parameters" method="POST" class="settings-form">
+                    <div class="input-group">
+                        <label for="currentPassword">Current password</label>
+                        <input type="password" id="currentPassword" name="currentPassword" placeholder="Password..."
+                            oninput="clearError(this)" required minlength="12">
+                    </div>
 
-                    <label>New password</label>
-                    <p><input type="password" id="password" name="password" placeholder="Password..."
-                            oninput="clearError(this)" required minlength="12"></p>
+                    <div class="input-group">
+                        <label for="password">New password</label>
+                        <input type="password" id="password" name="password" placeholder="Password..."
+                            oninput="clearError(this)" required minlength="12">
+                    </div>
 
-                    <label>Confirm new password</label>
-                    <p><input type="password" id="confirmPassword" name="confirmPassword"
+                    <div class="input-group">
+                        <label for="confirmPassword">Confirm new password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword"
                             placeholder="Confirm password..." oninput="clearError(this); validatePassword('update')">
-                    </p>
+                    </div>
 
-                    <span id="pswdErrorSpan"></span>
-                    <button name="passwordModified" type="submit">Confirm</button>
+                    <span id="pswdErrorSpan" class="error-text"></span>
+                    <button name="passwordModified" type="submit" class="btn-primary">Confirm</button>
                 </form>
             </article>
-            <article>
-                <a href="/memberships">
+
+            <article class="settings-card">
+                <a href="/memberships" class="card-title-link">
                     <h3>Membership plans</h3>
                 </a>
 
                 <?php if (isset($_SESSION['successMessage'])): ?>
-                    <p>
-                        <?= $_SESSION['successMessage'] ?>
-                    </p>
-                    <?php unset($_SESSION['successMessage']);
-                endif; ?>
+                    <p class="message-success"><?= $_SESSION['successMessage'] ?></p>
+                    <?php unset($_SESSION['successMessage']); ?>
+                <?php endif; ?>
 
                 <?php if ($isMember): ?>
-                    <div class="membership-status"
-                        style="padding: 15px; border: 1px solid #ff4d4d; border-radius: 8px; margin-bottom: 20px;">
-                        <p><strong>Status:</strong> Premium Member <i class="fa-solid fa-crown" style="color: gold;"></i>
-                        </p>
+                    <div class="membership-status">
+                        <p><strong>Status:</strong> Premium Member <i class="fa-solid fa-crown icon-crown"></i></p>
 
                         <form action="/parameters" method="POST"
                             onsubmit="return confirm('Are you sure you want to cancel your automatic renewal? You will keep your benefits until the end of the current period.');">
-                            <button type="submit" name="cancelSubscription"
-                                style="background-color: #666; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">
+                            <button type="submit" name="cancelSubscription" class="btn-secondary">
                                 Cancel automatic renewal
                             </button>
                         </form>
                     </div>
-                <?php endif ?>
-                </a>
+                <?php endif; ?>
             </article>
 
-            <article class="profile-views-section"
-                style="padding: 15px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 8px;">
+            <article class="settings-card profile-views-section">
                 <h3>Profile views</h3>
-                <p style="font-size: 1.2em; font-weight: bold; color: #ff4d4d;">
+                <p class="total-views-counter">
                     <i class="fa-solid fa-eye"></i> <?= $user->getTotalViews() ?> views total
                 </p>
-                <div class="viewers-list"
-                    style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; position: relative;">
 
+                <div class="viewers-list">
                     <?php if (!empty($viewers)): ?>
                         <?php foreach ($viewers as $viewer): ?>
-                            <div class="viewer-item" style="text-align: center; width: 70px;">
+                            <div class="viewer-item">
                                 <?php if ($isMember): ?>
-                                    <a href="otherProfile?id=<?= $viewer->getId() ?>&from=parameters">
-                                        <img style="width:50px; height: 50px; object-fit: cover; clip-path:circle();"
-                                            src="/public/uploads/<?= $viewer->getAvatar() ?>">
+                                    <a href="otherProfile?id=<?= $viewer->getId() ?>&from=parameters" class="viewer-avatar-link">
+                                        <img class="viewer-avatar" src="/public/uploads/<?= $viewer->getAvatar() ?>" alt="Avatar">
                                     </a>
-                                    <p
-                                        style="margin: 5px 0 0 0; font-size: 0.9em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                        <?= htmlspecialchars($viewer->getFirstName()) ?>
-                                    </p>
+                                    <p class="viewer-name"><?= htmlspecialchars($viewer->getFirstName()) ?></p>
                                 <?php else: ?>
-                                    <div style="cursor: pointer;" onclick="window.location.href='/memberships'">
-                                        <img style="width:50px; height: 50px; object-fit: cover; clip-path:circle(); filter: blur(5px); pointer-events: none;"
-                                            src="/public/uploads/<?= $viewer->getAvatar() ?>">
-                                        <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #999;">••••••</p>
+                                    <div class="viewer-blurred" onclick="window.location.href='/memberships'">
+                                        <img class="viewer-avatar blurred-img" src="/public/uploads/<?= $viewer->getAvatar() ?>"
+                                            alt="Avatar">
+                                        <p class="viewer-name anonymized">••••••</p>
                                     </div>
                                 <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p style="font-style: italic; color: #999;">No visits yet. Update your profile to get noticed!</p>
+                        <p class="no-data-text">No visits yet. Update your profile to get noticed!</p>
                     <?php endif; ?>
 
                     <?php if (!$isMember && !empty($viewers)): ?>
-                        <div class="premium-overlay"
-                            style="width: 100%; text-align: center; padding: 15px 0; background: linear-gradient(transparent, rgba(255,255,255,0.95) 30%); margin-top: 10px;">
-                            <p style="margin: 0 0 10px 0; font-weight: bold; color: #333;">
-                                <i class="fa-solid fa-crown" style="color: gold;"></i> Someone is interested in you!
+                        <div class="premium-overlay">
+                            <p class="overlay-title">
+                                <i class="fa-solid fa-crown icon-crown"></i> Someone is interested in you!
                             </p>
-                            <a href="/memberships"
-                                style="display: inline-block; background-color: #ff4d4d; color: white; padding: 8px 15px; text-decoration: none; border-radius: 20px; font-weight: bold; font-size: 0.9em; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <a href="/memberships" class="btn-premium">
                                 See who visited your profile
                             </a>
                         </div>
                     <?php endif; ?>
-
                 </div>
             </article>
 
-            <article>
-                <a href="/logout">Log out <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
-            </article>
-            <article>
-                <form action="parameters" method="POST"
+            <article class="settings-card actions-area">
+                <a href="/logout" class="btn-logout">
+                    Log out <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+
+                <form action="parameters" method="POST" class="delete-account-form"
                     onsubmit="return confirm('Are you sure you want to delete your account ? This action cannot be undone.');">
-                    <button type="submit" name="deleteAccount">
+                    <button type="submit" name="deleteAccount" class="btn-delete">
                         <i class="fa-solid fa-trash"></i> Delete account ?
                     </button>
                 </form>

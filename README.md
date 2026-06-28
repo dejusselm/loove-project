@@ -36,6 +36,6 @@ MailHog is used to intercept mails sent by Loove App.
 <br> To see them, go to http://localhost:8025, make sure that MailHog is on, and then to Inbox. 
 
 # Admin account
-To make an admin account, you have to register like usual, and then in the database, in users table, set your account's role to 'admin'.
+To make an admin account, you have to register like usual, and then manually set in the database's users table, column 'role' to 'admin'.
 
 

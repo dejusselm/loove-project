@@ -20,7 +20,7 @@ While being at the root of the project, type the following in the terminal :
 
     STRIPE_SECRET_KEY="sk_test_51TmC5VGbfvYQKJFYnGP90ZBpZhNBQJv4MtIllQAZhbXEFXuVBr88B88Y1HigIvaMjFoQ6tWie7RjUDQxqRvgWpmn00bBGiwW6b"
 
-### This 'secret key' is a testing key
+This 'secret key' is a testing key
 
 ## There is no interface given to check the database. You have to use a software like MySql Workbench
 How to config database in a DB software ( using previous .env values)

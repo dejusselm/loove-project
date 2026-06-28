@@ -10,15 +10,15 @@ While being at the root of the project, type the following in the terminal :
 # Add a file named '.env' to the root of the project (next to the docker files)
 .env file example ( you can copy and paste the following ): 
 
-    - DB_ROOT_PASSWORD=root
-    - DB_NAME=loove_app
-    - DB_USER=loove_user
-    - DB_PASSWORD=loove_password
+    DB_ROOT_PASSWORD=root
+    DB_NAME=loove_app
+    DB_USER=loove_user
+    DB_PASSWORD=loove_password
 
-    - ROOT_PATH="/var/www/html/"
-    - APP_URL="http://localhost/views"
+    ROOT_PATH="/var/www/html/"
+    APP_URL="http://localhost/views"
 
-    - STRIPE_SECRET_KEY="sk_test_51TmC5VGbfvYQKJFYnGP90ZBpZhNBQJv4MtIllQAZhbXEFXuVBr88B88Y1HigIvaMjFoQ6tWie7RjUDQxqRvgWpmn00bBGiwW6b"
+    STRIPE_SECRET_KEY="sk_test_51TmC5VGbfvYQKJFYnGP90ZBpZhNBQJv4MtIllQAZhbXEFXuVBr88B88Y1HigIvaMjFoQ6tWie7RjUDQxqRvgWpmn00bBGiwW6b"
 
 #This 'secret key' is a testing key
 

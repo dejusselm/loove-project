@@ -1,26 +1,66 @@
-* {
-    margin: 0.5em;
+:root {
+    --white: #F0F0F0;
+    --light-pink: #EA638C;
+    --dark-pink: #89023E;
+    --dark-grey: #30343F;
+    --black: #1B2021;
+    --title-font: "Quicksand";
+    --font: "Roboto";
+}
+
+body {
+    margin: 1em;
+}
+
+label,
+button,
+a,
+h3,
+h1 {
+    font-family: var(--title-font);
 }
 
 form {
-    background-color: #ffffff;
+    padding: 1em;
     margin: auto;
-    padding: 40px;
     width: 70%;
     min-width: 300px;
     max-width: 500px;
+    border-radius: 1em;
+}
+
+form>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+label {
+    align-self: flex-start;
 }
 
 input {
     padding: 10px;
-    width: 100%;
+    width: 95%;
     font-size: 17px;
     font-family: Raleway;
-    border: 1px solid #aaaaaa;
+    border: 1px solid var(--light-pink);
+    background-color: white;
+    border-radius: 1em;
+}
+
+input::placeholder {
+    font-size: 0.9em;
+    font-family: var(--font);
 }
 
 input.invalid {
     background-color: #ffdddd;
+}
+
+a {
+    text-decoration: none;
 }
 
 .tab {
@@ -31,7 +71,7 @@ input.invalid {
     height: 15px;
     width: 15px;
     margin: 0 2px;
-    background-color: #EA638C;
+    background-color: var(--light-pink);
     border: none;
     border-radius: 50%;
     display: inline-block;
@@ -43,20 +83,36 @@ input.invalid {
 }
 
 .step.finish {
-    background-color: #89023E;
+    background-color: var(--dark-pink);
 }
 
 button {
-    padding: 0.5em 1em 0.5em 1em;
+    margin-top: 1em;
+    padding: 0.8em 1em 0.8em 1em;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 1em;
+    background-color: var(--light-pink);
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: var(--dark-pink);
+    color: white;
 }
 
 header {
     display: flex;
     justify-content: center;
+    align-items: center;
+    max-height: 13.38vh;
 }
 
 .logo {
     max-width: 200px;
+    display: block;
+
 }
 
 main {
@@ -75,4 +131,82 @@ article {
 
 .container>button {
     margin-top: 1em;
+}
+
+section {
+    border: 1px solid (var(--dark-pink));
+    border-radius: 1em;
+    max-width: 80%;
+    width: 80%;
+    height: 68vh;
+    max-height: 68vh;
+    padding: 0.8em 1.2em 0.8em 1.2em;
+
+    margin: 1em;
+    -webkit-box-shadow: 0px 10px 13px -7px rgba(137, 2, 62, 0.4), -1px 9px 15px -1px rgba(137, 2, 62, 0.4);
+    box-shadow: 0px 10px 13px -7px rgba(137, 2, 62, 0.4), -1px 9px 15px -1px rgba(137, 2, 62, 0.4);
+}
+
+#index button {
+    max-width: 80%;
+}
+
+h3 {
+    font-weight: normal;
+}
+
+.registerHead {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+
+.field-title {
+    font-family: var(--title-font);
+    font-weight: bold;
+    display: block;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+    width: 100%;
+}
+
+
+.radio-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    padding: 8px 14px;
+    border: 1px solid var(--light-pink);
+    border-radius: 2em;
+    cursor: pointer;
+}
+
+
+.radio-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--light-pink);
+}
+
+.radio-item label {
+    font-family: var(--font);
+    font-size: 0.95em;
+    margin: 0;
+    cursor: pointer;
 }

@@ -1,13 +1,13 @@
 <?php
-
+require_once ROOT_PATH . '/config.php';
 class SqlConnect
 {
   public PDO $db;
   private string $host = 'db';
   private string $port = '3306';
-  private string $dbname = 'loove_app';
-  private string $user = 'root';
-  private string $password = 'root';
+  private string $dbname = DB_NAME;
+  private string $user = DB_USER;
+  private string $password = DB_PASSWORD;
 
   public function __construct()
   {

@@ -1,28 +1,52 @@
 <?php
+require_once 'Controller.php';
+require_once ROOT_PATH . 'repositories/UserRepository.php';
+require_once ROOT_PATH . 'models/User.php';
 
-require_once '../database/db.php';
+class DashboardController extends Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
 
-if (!isset($_SESSION['userId'])) {
-    header('Location: login.php');
-    exit;
-}
+        $this->requireAuth();
 
-$sql = new SqlConnect();
-$userId = $_SESSION['userId'];
+        if (!isset($_SESSION['searchSeed'])) {
+            $_SESSION['searchSeed'] = rand(1, 9999);
+        }
 
-$dataQuery = "
-    SELECT active, avatar
-    FROM users
-    WHERE id=:id;
-";
-$dataReq = $sql->db->prepare($dataQuery);
-$dataReq->execute(["id" => $userId]);
-$data = $dataReq->fetch(PDO::FETCH_ASSOC);
+    }
 
-if ($data['active'] == 0) {
-    unset($_SESSION["userId"]);
-    unset($_SESSION["role"]);
-    $_SESSION["errorMessage"] = "Account deactivated.";
-    header('Location: login.php');
-    exit;
+    public function index()
+    {
+        if ($this->user->getActive() == 0) {
+            $message = "Account deactivated : ";
+            unset($_SESSION["userId"]);
+            unset($_SESSION["role"]);
+            $_SESSION["errorMessage"] = $message;
+            header('Location: /');
+            exit;
+        }
+        if (isset($_GET['action']) && $_GET['action'] === 'shuffle') {
+            $_SESSION['searchSeed'] = rand(1, 9999);
+
+            header('Location: dashboard');
+            exit;
+        }
+    }
+
+    public function currentProfile(array $profiles): ?User
+    {
+        if (isset($_SESSION['currentProfileId'])) {
+            foreach ($profiles as $profile) {
+                if ($profile->getId() == $_SESSION['currentProfileId']) {
+                    return $profile;
+                } else {
+                    $_SESSION['currentProfileId'] = $profiles[0];
+                    return $profiles[0];
+                }
+            }
+        }
+    }
+
 }

@@ -1,18 +1,9 @@
-function openDescriptionModal() {
-    document.getElementById("description-modal").style.display = "flex";
+function closeModal(name) {
+    document.getElementById(name + "-modal").style.display = "none";
 }
 
-function closeDescriptionModal() {
-    document.getElementById("description-modal").style.display = "none";
-}
-
-function openHobbyModal() {
-    document.getElementById("hobby-modal").style.display = "flex";
-}
-
-
-function closeHobbyModal() {
-    document.getElementById("hobby-modal").style.display = "none";
+function openModal(name) {
+    document.getElementById(name + "-modal").style.display = "flex";
 }
 
 document.addEventListener("DOMContentLoaded", () => {

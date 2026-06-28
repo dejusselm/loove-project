@@ -1,6 +1,8 @@
 services:
   web:
     build: .
+    env_file:
+      - .env
     ports:
       - "0.0.0.0:8080:80"
     volumes:
@@ -8,9 +10,12 @@ services:
       - ./php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
+      - mailhog
 
   db:
     image: mysql:8.0
+    env_file:
+      - .env
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -20,7 +25,15 @@ services:
     ports:
       - "0.0.0.0:3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./src/database/database.sql:/docker-entrypoint-initdb.d/database.sql
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    logging:
+      driver: 'none'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
 volumes:
   mysql_data:

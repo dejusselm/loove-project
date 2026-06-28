@@ -29,19 +29,28 @@ function nextPrev(n) {
     showTab(currentTab);
 }
 
-function validatePassword() {
+function validatePassword(type) {
     const pswd = document.getElementById("password");
     const confirmPswd = document.getElementById("confirmPassword");
     const errorSpan = document.getElementById("pswdErrorSpan");
-    const nextBtn = document.getElementById("nextBtn");
+    const nextBtn = document.getElementById("nextBtn") ?? null;
     console.log(pswd.value, confirmPswd.value);
-    if (pswd.value !== confirmPswd.value) {
-        errorSpan.innerText = "Passwords do not match.";
-        nextBtn.disabled = true;
-    }
-    else {
-        errorSpan.style.display = "none";
-        nextBtn.disabled = false;
+    if (type == register) {
+        if (pswd.value !== confirmPswd.value) {
+            errorSpan.innerText = "Passwords do not match.";
+            nextBtn.disabled = true;
+        }
+        else {
+            errorSpan.style.display = "none";
+            nextBtn.disabled = false;
+        }
+    } else {
+        if (pswd.value !== confirmPswd.value) {
+            errorSpan.innerText = "Passwords do not match.";
+        }
+        else {
+            errorSpan.style.display = "none";
+        }
     }
 }
 
@@ -100,33 +109,4 @@ function clearError(input) {
     }
 }
 
-
-function handleAvatarChange(input) {
-    const preview = document.getElementById('avatarPreview');
-    const maxSize = 2097152; // 2 Mo in octets
-
-    // Verifies if a file was selected
-    if (!input.files || !input.files[0]) {
-        preview.src = '#';
-        preview.style.display = 'none';
-        return;
-    }
-
-    // Size verification
-    if (input.files[0].size > maxSize) {
-        alert("File is too big! Maximum size allowed is 2MB.");
-        input.value = ""; // Clears input to prevent submitting incorrect file
-        preview.src = '#'; // Clears preview
-        preview.style.display = 'none'; // Hides preview
-        return;
-    }
-
-    // Else, displays preview with FileReader API
-    const reader = new FileReader();
-    reader.onload = function (event) {
-        preview.src = event.target.result;
-        preview.style.display = 'block';
-    }
-    reader.readAsDataURL(input.files[0]);
-}
 

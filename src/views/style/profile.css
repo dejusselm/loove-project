@@ -1,14 +1,35 @@
+:root {
+    --white: #F0F0F0;
+    --light-pink: #EA638C;
+    --dark-pink: #89023E;
+    --dark-grey: #30343F;
+    --black: #1B2021;
+    --title-font: "Quicksand";
+    --font: "Roboto";
+}
+
+body {
+    margin: 1em;
+}
+
 body article,
 main *,
 header * {
     margin: 0.25em;
+    font-family: var(--font);
+}
+
+h1,
+h3 {
+    font-family: var(--title-font);
+    text-align: center;
 }
 
 header {
     display: flex;
     flex-direction: row;
     max-height: 10vh;
-    align-content: center;
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -32,24 +53,33 @@ section {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    gap: 1em;
 }
 
 section article {
     display: flex;
     flex-direction: row;
-    padding: 0.5em;
+    justify-content: space-between;
+    padding: 1em;
 }
 
 .modify {
-    border: 0.1em solid black;
+    border: 0.1em solid rgba(255, 255, 255, 0);
     border-radius: 1em;
+    -webkit-box-shadow: 0px 5px 8px 1px rgba(137, 2, 62, 0.39);
+    box-shadow: 0px 5px 8px 1px rgba(137, 2, 62, 0.39);
+
 }
 
 
 
 section img {
-    max-width: 150px;
-    clip-path: circle();
+    height: 300px;
+    max-width: 300px;
+    border-radius: 1em;
+    justify-self: center;
+    align-self: center;
+    object-fit: cover;
 }
 
 ul {
@@ -127,12 +157,48 @@ ul {
     color: white;
 }
 
+
+
 textarea {
-    min-width: 300px;
-    max-width: 400px;
-    min-height: 200px;
-    max-height: 300px;
+    max-width: 100%;
+    width: 100%;
     resize: none;
+    border-radius: 1em;
+    height: 100%;
+    padding: 1em;
+}
+
+div#textarea {
+    width: 100%;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 100%;
+    gap: 2em;
+    margin: 2em;
+}
+
+button {
+    margin-top: 1em;
+    padding: 0.8em 1em 0.8em 1em;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 1em;
+    background-color: var(--light-pink);
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: var(--dark-pink);
+}
+
+button:hover i {
+    color: white;
 }
 
 #hobbies,
@@ -140,4 +206,71 @@ textarea {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    overflow-x: hidden;
+}
+
+#description p {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+header a i {
+    font-size: 50px;
+}
+
+i {
+    color: var(--dark-pink);
+}
+
+/* Container de la galerie */
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.profile-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 colonnes alignées */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Chaque case de photo */
+.gallery-item {
+    aspect-ratio: 1 / 1;
+    /* Rendu carré parfait */
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Recadre proprement l'image dans le carré */
+}
+
+/* Case vide pour ajouter une photo */
+.gallery-item.empty-slot {
+    border: 2px dashed #b0b0b0;
+    cursor: pointer;
+    color: #b0b0b0;
+    transition: all 0.2s ease;
+}
+
+.gallery-item.empty-slot:hover {
+    border-color: #ff4757;
+    color: #ff4757;
+    background-color: #fff0f2;
 }

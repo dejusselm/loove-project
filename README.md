@@ -25,9 +25,9 @@ While being at the root of the project, type the following in the terminal :
 ## There is no interface given to check the database. You have to use a software like MySql Workbench
 How to config database in a DB software ( using previous .env values)
 
-Connection name: love_app
-Hostname: 127.0.0.1
-Port: 3306
-Username: root ( or loove_user )
-Password: root ( or loove_password ) 
+    Connection name: love_app
+    Hostname: 127.0.0.1
+    Port: 3306
+    Username: root ( or loove_user )
+    Password: root ( or loove_password ) 
 

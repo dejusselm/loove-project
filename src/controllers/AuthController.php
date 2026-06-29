@@ -131,8 +131,9 @@ class AuthController extends Controller
 
         $_SESSION['email_verification_code'] = $verificationCode;
 
+        $headers = "From: no-reply@loove.local";
         mail($_POST['email'], "Your verification code", "Your code is: "
-            . $verificationCode);
+            . $verificationCode, $headers);
 
         header('Location: verifyEmail');
         exit;

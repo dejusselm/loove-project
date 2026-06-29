@@ -196,7 +196,7 @@ include ROOT_PATH . 'views/components/head.php';
             <span class="close-modal" onclick="closeReportModal()">&times;</span>
             <h3>Report this profile</h3>
 
-            <form action="report" method="POST" id="report-form" class="modal-form">
+            <form action="otherProfile?id=<?= $profile->getId() ?>" method="POST" id="report-form" class="modal-form">
                 <input type="hidden" name="reported_user_id" id="reportedUserId" value="">
 
                 <div class="form-group-textarea">
